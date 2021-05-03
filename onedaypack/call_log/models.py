@@ -4,11 +4,18 @@ from django.db import models
 
 class Topic(models.Model):
     """ Тема обращения """
-    title = models.CharField(verbose_name='Тема',
+    title = models.CharField(verbose_name='Название',
                              max_length=200)
     parent = models.ForeignKey('self',
                                null=True,
                                on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Тема'
+        verbose_name_plural = 'Темы'
 
 
 class Department(models.Model):
@@ -20,6 +27,10 @@ class Department(models.Model):
                                null=True,
                                on_delete=models.SET_NULL)
 
+    class Meta:
+        verbose_name = 'Подразделение'
+        verbose_name_plural = 'Подразделения'
+
 
 class Contact(models.Model):
     """
@@ -28,15 +39,25 @@ class Contact(models.Model):
     """
     sni14 = models.CharField(verbose_name='СНИЛС',
                              max_length=14,
-                             blank=True)
+                             blank=True,
+                             default='123-456-789 00')
     fio = models.CharField(max_length=200,
                            verbose_name='Ф.И.О.',
-                           blank=True)
-    contact = models.JSONField(verbose_name='Контакты')
-    created_at = models.DateTimeField(verbose_name="Создано", auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="Обновлено", auto_now=True)
+                           blank=True,
+                           default='')
+    contact = models.JSONField(verbose_name='Контакты',
+                               null=True)
+    created_at = models.DateTimeField(verbose_name="Создано",
+                                      auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="Обновлено",
+                                      auto_now=True)
     edited_by = models.ForeignKey(User,
+                                  null=True,
                                   on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
 
 
 class Advice(models.Model):
@@ -65,10 +86,12 @@ class Advice(models.Model):
 
     topic = models.ForeignKey(Topic,
                               verbose_name='Тема',
+                              null=True,
                               on_delete=models.SET_NULL)
-    duration = models.IntegerField(verbose_name='Длительность консультации, минут',
-                                   null=False)
-    department = models.ForeignKey(Department, on_delete=models.SET_NULL)
+    duration = models.IntegerField(verbose_name='Длительность консультации, минут')
+    department = models.ForeignKey(Department,
+                                   null=True,
+                                   on_delete=models.SET_NULL)
     advice_type = models.IntegerField(choices=AdviceType.choices,
                                       verbose_name='Тип консультации')
     advice_result = models.IntegerField(verbose_name='Результаты консультирования',
@@ -76,12 +99,14 @@ class Advice(models.Model):
     category = models.IntegerField(verbose_name='Физ. или Юр. лицо',
                                    choices=Category.choices)
     contact = models.ForeignKey(Contact,
+                                null=True,
                                 on_delete=models.SET_NULL)
     created_at = models.DateTimeField(verbose_name="Создано",
                                       auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Обновлено",
                                       auto_now=True)
     edited_by = models.ForeignKey(User,
+                                  null=True,
                                   on_delete=models.SET_NULL)
 
 
@@ -93,7 +118,15 @@ class Note(models.Model):
     advice = models.ForeignKey(Advice,
                                on_delete=models.CASCADE)
     content = models.TextField()
-    created_at = models.DateTimeField(verbose_name="Создано", auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name="Обновлено", auto_now=True)
+    created_at = models.DateTimeField(verbose_name="Создано",
+                                      auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name="Обновлено",
+                                      auto_now=True)
     edited_by = models.ForeignKey(User,
+                                  null=True,
                                   on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name = 'Примечание'
+        verbose_name_plural = 'Примечания'
+        ordering = ['-created_at']
