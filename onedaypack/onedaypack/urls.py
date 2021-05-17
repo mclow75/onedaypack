@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
 import main.views
+import debug_toolbar
 from call_log.views import AdviceViewSet
 
 
@@ -28,7 +29,8 @@ router.register(r'api/call_log/advices', AdviceViewSet, basename='advice')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('', main.views.index)
+    path('', main.views.index),
+    path('__debug__/', include(debug_toolbar.urls)),
 ]
 
 urlpatterns += router.urls

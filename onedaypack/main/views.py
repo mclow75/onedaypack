@@ -5,8 +5,8 @@ from main.models import FastPoint
 
 def index(request):
     points = FastPoint.objects.all()
-    context = {
+    content = {
         'points': points,
     }
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/index.html', content)
 
