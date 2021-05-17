@@ -1,0 +1,1 @@
+insert into call_log_department(title,parent_id) values ('ОПФР по Амурской области', null)

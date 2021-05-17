@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from users.models import CustomUser
+
 
 class Topic(models.Model):
     """ Тема обращения """
@@ -16,6 +18,7 @@ class Topic(models.Model):
     class Meta:
         verbose_name = 'Тема'
         verbose_name_plural = 'Темы'
+        ordering = ['title']
 
 
 class Department(models.Model):
@@ -27,9 +30,13 @@ class Department(models.Model):
                                null=True,
                                on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = 'Подразделение'
         verbose_name_plural = 'Подразделения'
+        ordering = ['title']
 
 
 class Contact(models.Model):
@@ -51,13 +58,18 @@ class Contact(models.Model):
                                       auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Обновлено",
                                       auto_now=True)
-    edited_by = models.ForeignKey(User,
+    edited_by = models.ForeignKey(CustomUser,
+                                  verbose_name="Редактор",
                                   null=True,
                                   on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.fio
 
     class Meta:
         verbose_name = 'Контакт'
         verbose_name_plural = 'Контакты'
+        ordering = ['-updated_at']
 
 
 class Advice(models.Model):
@@ -105,9 +117,17 @@ class Advice(models.Model):
                                       auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Обновлено",
                                       auto_now=True)
-    edited_by = models.ForeignKey(User,
+    edited_by = models.ForeignKey(CustomUser,
                                   null=True,
                                   on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return str(self.pk)
+
+    class Meta:
+        verbose_name = 'Обращение'
+        verbose_name_plural = 'Обращения'
+        ordering = ['-updated_at']
 
 
 class Note(models.Model):
@@ -122,7 +142,7 @@ class Note(models.Model):
                                       auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="Обновлено",
                                       auto_now=True)
-    edited_by = models.ForeignKey(User,
+    edited_by = models.ForeignKey(CustomUser,
                                   null=True,
                                   on_delete=models.SET_NULL)
 

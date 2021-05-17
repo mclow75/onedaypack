@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet" >
+      <link href="{% static 'css/fontawesome/all.css' %}" rel="stylesheet">
+    <title></title>
+  </head>
+  <body>
+    <div class="container-fluid">
+          {% block header %}
+            {% include 'inc/_header.html' %}
+          {% endblock %}
+  </div>
+    <div class="container-fluid">
+          {% block navbar %}
+            {% include 'inc/_navbar.html' %}
+          {% endblock %}
+    </div>
+    <div class="container-fluid">
+          {% block content %}
+          {% endblock %}
+    </div>
+    <div class="container-fluid">
+          {% block footer %}
+            {% include 'inc/_header.html' %}
+          {% endblock %}
+    </div>
+    <script src="{% static 'js/bootstrap/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/popper.js/1.14.7/umd/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+  </body>
+</html>

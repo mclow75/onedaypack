@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
 from django.db import models
+from users.models import CustomUser
 
 
 class Notice(models.Model):
@@ -16,7 +16,7 @@ class Notice(models.Model):
                               blank=True)
     is_published = models.BooleanField(verbose_name="Опубликовано",
                                        default=True)
-    edited_by = models.ForeignKey(User,
+    edited_by = models.ForeignKey(CustomUser,
                                   null=True,
                                   on_delete=models.SET_NULL)
 

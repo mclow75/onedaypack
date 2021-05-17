@@ -24,7 +24,6 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
-# reading .env file
 environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.\\onedaypack\\.env'))
 # False if not in os.environ
 DEBUG = env('DEBUG')
@@ -44,10 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
     'bootstrap4',
+    'rest_framework',
     'django_filters',
+    'crispy_forms',
 
+    'users',
+    'main',
     'news',
     'call_log',
 ]
@@ -64,10 +66,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'onedaypack.urls'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,6 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -127,6 +132,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+print(STATICFILES_DIRS)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
